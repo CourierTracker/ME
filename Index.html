@@ -1,265 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OPay Clone Parallax</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<style>
-    * {margin:0; padding:0; box-sizing:border-box;}
-    body {font-family:'Roboto', sans-serif; color:#333; line-height:1.6; overflow-x:hidden; background:#fff;}
-    
-    header {
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        padding:1rem 2rem;
-        background-color:#FF5A5F;
-        color:white;
-        position:sticky;
-        top:0;
-        z-index:100;
-    }
-    header .logo {font-size:1.5rem; font-weight:bold;}
-    header nav a {color:white; text-decoration:none; margin-left:1.5rem; font-weight:500;}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OPay Clone with Parallax</title>
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    /* Hero Section */
-    .hero {
-        position:relative;
-        display:flex;
-        flex-wrap:wrap;
-        align-items:center;
-        justify-content:space-between;
-        padding:6rem 2rem;
-        background: linear-gradient(135deg, #FF5A5F 0%, #FF7A7F 100%);
-        color:white;
-        overflow:hidden;
-        perspective: 1000px;
-    }
-    /* Floating SVG shapes */
-    .hero::before, .hero::after {
-        content:'';
-        position:absolute;
-        border-radius:50%;
-        opacity:0.25;
-        z-index:1;
-    }
-    .hero::before {
-        width:250px; height:250px;
-        background:rgba(255,255,255,0.3);
-        top:-60px; left:-60px;
-    }
-    .hero::after {
-        width:180px; height:180px;
-        background:rgba(255,255,255,0.2);
-        bottom:-40px; right:-40px;
+    body, html { 
+      height: 100%; 
+      overflow-x: hidden; 
+      font-family: Arial, sans-serif; 
+      background: #111;
+      color: white;
     }
 
-    .hero-content {
-        flex:1 1 400px;
-        z-index:2;
-        opacity:0;
-        transform:translateY(40px);
-        transition:1s ease;
+    /* Parallax container */
+    .parallax {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
     }
-    .hero-content.visible {opacity:1; transform:translateY(0);}
-    .hero-content h1 {font-size:3rem; margin-bottom:1rem;}
-    .hero-content p {font-size:1.2rem; margin-bottom:2rem;}
-    .hero-content button {
-        padding:1rem 2rem;
-        font-size:1rem;
-        background-color:white;
-        color:#FF5A5F;
-        border:none;
-        border-radius:12px;
-        cursor:pointer;
-        font-weight:bold;
-        transition:0.3s, transform 1s ease-in-out;
-        animation: float 3s ease-in-out infinite;
-    }
-    .hero-content button:hover {background-color:#ffecec;}
-    @keyframes float {0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
 
-    .hero-image {
-        flex:1 1 400px;
-        text-align:center;
-        z-index:2;
-        opacity:0;
-        transform:translateY(40px);
-        transition:1s ease;
-        position:relative;
+    /* Images for parallax */
+    .parallax img {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 50%;
+      height: auto;
+      will-change: transform;
+      transition: transform 0.1s linear;
+      pointer-events: none;
     }
-    .hero-image.visible {opacity:1; transform:translateY(0);}
-    /* Multiple app mockups */
-    .hero-image img {
-        max-width:250px;
-        border-radius:20px;
-        box-shadow:0 20px 40px rgba(0,0,0,0.2);
-        position:absolute;
-        top:0; left:50%;
-        transform:translateX(-50%);
-        animation: floatApp 4s ease-in-out infinite alternate;
-    }
-    .hero-image img:nth-child(2) {
-        top:20px; left:55%;
-        z-index:-1;
-        max-width:220px;
-        animation-delay:1s;
-    }
-    @keyframes floatApp {0%{transform:translateX(-50%) translateY(0px);}50%{transform:translateX(-50%) translateY(-15px);}100%{transform:translateX(-50%) translateY(0px);}}
 
-    /* Hero text overlay on phone */
-    .hero-text-overlay {
-        position:absolute;
-        top:20%;
-        left:50%;
-        transform:translateX(-50%);
-        text-align:center;
-        color:white;
-        z-index:3;
+    /* Overlay content */
+    .content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 20px 40px;
+      background: rgba(0,0,0,0.4);
+      border-radius: 10px;
     }
-    .hero-text-overlay h2 {font-size:2rem; font-weight:bold; margin-bottom:1rem;}
-    .hero-text-overlay p {font-size:1rem;}
 
-    /* Features with gradient highlight */
-    .features {
-        display:flex;
-        flex-wrap:wrap;
-        justify-content:space-around;
-        padding:4rem 2rem;
-        background:#f9f9f9;
-        position:relative;
+    .content h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
     }
-    .feature {
-        flex:1 1 250px;
-        margin:1rem;
-        background:white;
-        padding:2rem;
-        border-radius:20px;
-        text-align:center;
-        box-shadow:0 15px 35px rgba(0,0,0,0.1);
-        transition:0.3s, transform 1s ease-in-out;
-        opacity:0;
-        transform:translateY(30px);
-        position:relative;
-        overflow:hidden;
-    }
-    .feature.visible {opacity:1; transform:translateY(0);}
-    .feature:hover {transform:translateY(-10px);}
-    .feature::before {
-        content:'';
-        position:absolute;
-        top:-50px; left:-50px;
-        width:150%; height:150%;
-        background:linear-gradient(135deg, #FF5A5F, #FFB0B0);
-        opacity:0.2;
-        transform:rotate(25deg);
-    }
-    .feature h3 {color:#FF5A5F; margin-bottom:1rem; position:relative; z-index:2;}
-    .feature p {font-size:0.95rem; color:#555; position:relative; z-index:2;}
 
-    /* Footer */
-    footer {background:#333; color:white; padding:3rem 2rem;}
-    .footer-container {display:flex; flex-wrap:wrap; justify-content:space-between;}
-    .footer-column {flex:1 1 200px; margin:1rem 0; opacity:0; transform:translateY(30px); transition:1s ease;}
-    .footer-column.visible {opacity:1; transform:translateY(0);}
-    .footer-column h4 {margin-bottom:1rem; color:#FF5A5F;}
-    .footer-column a {display:block; color:white; text-decoration:none; margin:0.3rem 0;}
-    .footer-bottom {text-align:center; margin-top:2rem; font-size:0.9rem; color:#bbb;}
-</style>
+    .content p {
+      font-size: 1.5em;
+    }
+
+    /* Optional: Make page scrollable */
+    .spacer {
+      height: 100vh;
+      background: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+      color: #ddd;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">OPay</div>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Services</a>
-        <a href="#">Merchants</a>
-        <a href="#">Help</a>
-        <a href="#">Login</a>
-    </nav>
-</header>
+  <!-- Parallax section -->
+  <div class="parallax">
+    <img src="phone1.svg" alt="Phone 1" class="parallax-img" data-speed="0.5">
+    <img src="phone2.svg" alt="Phone 2" class="parallax-img" data-speed="0.3">
+    <div class="content">
+      <h1>Welcome to OPay</h1>
+      <p>Experience seamless transactions at your fingertips.</p>
+    </div>
+  </div>
 
-<section class="hero">
-    <div class="hero-content">
-        <h1>We are Beyond Banking</h1>
-        <p>Pay, transfer, and manage your money seamlessly with OPay. Safe, fast, and easy for everyone.</p>
-        <button>Get Started</button>
-    </div>
-    <div class="hero-image">
-        <img src="https://via.placeholder.com/250x500?text=Phone+1" alt="App Mockup 1">
-        <img src="https://via.placeholder.com/220x450?text=Phone+2" alt="App Mockup 2">
-    </div>
-    <div class="hero-text-overlay">
-        <h2>Instant Payments</h2>
-        <p>Send and receive money instantly, anywhere in Nigeria.</p>
-    </div>
-</section>
+  <!-- Extra scrollable content -->
+  <div class="spacer">Scroll down to see parallax in action</div>
 
-<section class="features">
-    <div class="feature">
-        <h3>Wallet</h3>
-        <p>Securely store and manage your money with ease.</p>
-    </div>
-    <div class="feature">
-        <h3>Payments</h3>
-        <p>Pay bills, shop online, and transfer funds effortlessly.</p>
-    </div>
-    <div class="feature">
-        <h3>Merchant Services</h3>
-        <p>Tools for merchants to grow their business.</p>
-    </div>
-    <div class="feature">
-        <h3>Support</h3>
-        <p>24/7 customer support to assist you anytime.</p>
-    </div>
-</section>
+  <script>
+    // Smooth parallax
+    const parallaxImages = document.querySelectorAll('.parallax-img');
+    let scrollY = 0;
 
-<footer>
-    <div class="footer-container">
-        <div class="footer-column">
-            <h4>Company</h4>
-            <a href="#">About Us</a>
-            <a href="#">Careers</a>
-            <a href="#">Blog</a>
-        </div>
-        <div class="footer-column">
-            <h4>Support</h4>
-            <a href="#">Help Center</a>
-            <a href="#">FAQs</a>
-            <a href="#">Contact</a>
-        </div>
-        <div class="footer-column">
-            <h4>Legal</h4>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-        </div>
-    </div>
-    <div class="footer-bottom">&copy; 2025 OPay Clone. All rights reserved.</div>
-</footer>
-
-<script>
-    // Fade-in on scroll
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if(entry.isIntersecting){
-                entry.target.classList.add('visible');
-            }
-        });
-    }, { threshold: 0.2 });
-
-    document.querySelectorAll('.hero-content, .hero-image, .feature, .footer-column').forEach(el => {
-        observer.observe(el);
-    });
-
-    // Parallax scroll for hero shapes
     window.addEventListener('scroll', () => {
-        const scrollY = window.scrollY;
-        document.querySelector('.hero::before'); // CSS pseudo elements can't be accessed, this is illustrative
-        // For real parallax, we can use actual divs for shapes if needed
+      scrollY = window.pageYOffset;
     });
-</script>
+
+    function parallaxLoop() {
+      parallaxImages.forEach(img => {
+        const speed = parseFloat(img.getAttribute('data-speed'));
+        img.style.transform = `translate(-50%, calc(-50% + ${scrollY * speed}px))`;
+      });
+      requestAnimationFrame(parallaxLoop);
+    }
+
+    parallaxLoop();
+  </script>
 
 </body>
 </html>
